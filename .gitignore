@@ -1,1 +1,5 @@
 artifacts/crypto-config/
+artifacts/crypto-config/Pi1MSPanchors.tx
+artifacts/crypto-config/Pi2MSPanchors.tx
+artifacts/crypto-config/genesis.block
+artifacts/crypto-config/mychannel.tx
