@@ -1,0 +1,2 @@
+Installed chaincodes on peer:
+Package ID: cura_1:ca0c7e8e6dacea1378e5f2cb04a2b34f7b3732c57c766a28749ed7864d72129f, Label: cura_1

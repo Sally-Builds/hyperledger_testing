@@ -23,31 +23,30 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org1
   # ---------------------------------------------------------------------------
-  - Name: Pi1
-    Domain: pi1.cura.com
+  - Name: Org1
+    Domain: org1.cura.com
     EnableNodeOUs: true
 
     Template:
-      # count is the number of peers for this organization
-      Count: 1
+      Count: 2
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
       SANS:
         - "localhost"
 
     Users:
-      Count: 2
+      Count: 1
 
-  - Name: Pi2
-    Domain: pi2.cura.com
+  - Name: Org2
+    Domain: org2.cura.com
     EnableNodeOUs: true
 
     Template:
-      Count: 1
+      Count: 2
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
       SANS:
         - "localhost"
 
     Users:
-      Count: 2
+      Count: 1

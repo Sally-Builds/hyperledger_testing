@@ -4,45 +4,45 @@ networks:
   test:
 
 services:
-  ca-pi1:
+  ca-org1:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.pi1.cura.com
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pi1.cura.com-cert.pem
+      - FABRIC_CA_SERVER_CA_NAME=ca.org1.cura.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.cura.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.pi1.cura.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.org1.cura.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/pi1.cura.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      - ./crypto-config/peerOrganizations/pi1.cura.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
-    container_name: ca.pi1.cura.com
-    hostname: ca.pi1.cura.com
+      - ./crypto-config/peerOrganizations/org1.cura.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org1.cura.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca.org1.cura.com
+    hostname: ca.org1.cura.com
     networks:
       - test
 
-  ca-pi2:
+  ca-org2:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.pi2.cura.com
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.pi2.cura.com-cert.pem
+      - FABRIC_CA_SERVER_CA_NAME=ca.org2.cura.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.cura.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.pi2.cura.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.org2.cura.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/pi2.cura.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      - ./crypto-config/peerOrganizations/pi2.cura.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
-    container_name: ca.pi2.cura.com
-    hostname: ca.pi2.cura.com
+      - ./crypto-config/peerOrganizations/org2.cura.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org2.cura.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca.org2.cura.com
+    hostname: ca.org2.cura.com
     networks:
       - test
 
@@ -81,7 +81,6 @@ services:
       - ./crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/msp:/var/hyperledger/orderer/msp
       - ./crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/tls:/var/hyperledger/orderer/tls
 
-  
   couchdb0:
     container_name: couchdb0
     image: hyperledger/fabric-couchdb
@@ -104,9 +103,30 @@ services:
     networks:
       - test
 
+  couchdb2:
+    container_name: couchdb2
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 7984:5984
+    networks:
+      - test
 
-  peer0.pi1.cura.com:
-    container_name: peer0.pi1.cura.com
+  couchdb3:
+    container_name: couchdb3
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 8984:5984
+    networks:
+      - test
+
+  peer0.org1.cura.com:
+    container_name: peer0.org1.cura.com
     extends:
       file: base.yaml
       service: peer-base
@@ -117,15 +137,15 @@ services:
 
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
-      - CORE_PEER_ID=peer0.pi1.cura.com
-      - CORE_PEER_ADDRESS=peer0.pi1.cura.com:7051
+      - CORE_PEER_ID=peer0.org1.cura.com
+      - CORE_PEER_ADDRESS=peer0.org1.cura.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.pi1.cura.com:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.cura.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       # Peer used to bootstrap gossip within organisation
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pi1.cura.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.cura.com:8051
       # Exposed for discovery Service
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.pi1.cura.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.cura.com:7051
 
       # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
 
@@ -144,16 +164,57 @@ services:
     ports:
       - 7051:7051
     volumes:
-      - ./crypto-config/peerOrganizations/pi1.cura.com/peers/peer0.pi1.cura.com/msp:/etc/hyperledger/crypto/peer/msp
-      - ./crypto-config/peerOrganizations/pi1.cura.com/peers/peer0.pi1.cura.com/tls:/etc/hyperledger/crypto/peer/tls
+      - ./crypto-config/peerOrganizations/org1.cura.com/peers/peer0.org1.cura.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org1.cura.com/peers/peer0.org1.cura.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./:/etc/hyperledger/channel/
     networks:
       - test
 
+  peer1.org1.cura.com:
+    container_name: peer1.org1.cura.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Org1MSP
 
-  peer0.pi2.cura.com:
-    container_name: peer0.pi2.cura.com
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+
+      - CORE_PEER_ID=peer1.org1.cura.com
+      - CORE_PEER_ADDRESS=peer1.org1.cura.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org1.cura.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.cura.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.cura.com:7051
+
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_METRICS_PROVIDER=prometheus
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    ports:
+      - 8051:8051
+    volumes:
+      - ./crypto-config/peerOrganizations/org1.cura.com/peers/peer1.org1.cura.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org1.cura.com/peers/peer1.org1.cura.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./:/etc/hyperledger/channel/
+    networks:
+      - test
+
+  peer0.org2.cura.com:
+    container_name: peer0.org2.cura.com
     extends:
       file: base.yaml
       service: peer-base
@@ -164,14 +225,14 @@ services:
 
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
-      - CORE_PEER_ID=peer0.pi2.cura.com
-      - CORE_PEER_ADDRESS=peer0.pi2.cura.com:9051
+      - CORE_PEER_ID=peer0.org2.cura.com
+      - CORE_PEER_ADDRESS=peer0.org2.cura.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.pi2.cura.com:9051
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.org2.cura.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
       # Exposed for discovery Service
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.pi2.cura.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pi2.cura.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.cura.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.cura.com:10051
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
@@ -187,10 +248,51 @@ services:
     ports:
       - 9051:9051
     volumes:
-      - ./channel/crypto-config/peerOrganizations/pi2.cura.com/peers/peer0.pi2.cura.com/msp:/etc/hyperledger/crypto/peer/msp
-      - ./channel/crypto-config/peerOrganizations/pi2.cura.com/peers/peer0.pi2.cura.com/tls:/etc/hyperledger/crypto/peer/tls
+      - ./crypto-config/peerOrganizations/org2.cura.com/peers/peer0.org2.cura.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org2.cura.com/peers/peer0.org2.cura.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel/:/etc/hyperledger/channel/
+      - ./:/etc/hyperledger/channel/
     networks:
       - test
 
+  peer1.org2.cura.com:
+    container_name: peer1.org2.cura.com
+    extends:
+      file: base.yaml
+      service: peer-base
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - CORE_PEER_LOCALMSPID=Org2MSP
+
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
+
+      - CORE_PEER_ID=peer1.org2.cura.com
+      - CORE_PEER_ADDRESS=peer1.org2.cura.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org2.cura.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      # Exposed for discovery Service
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.cura.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.cura.com:9051
+
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_METRICS_PROVIDER=prometheus
+      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
+    ports:
+      - 10051:10051
+    volumes:
+      - ./crypto-config/peerOrganizations/org2.cura.com/peers/peer1.org2.cura.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org2.cura.com/peers/peer1.org2.cura.com/tls:/etc/hyperledger/crypto/peer/tls
+      - /var/run/:/host/var/run/
+      - ./:/etc/hyperledger/channel/
+    networks:
+      - test

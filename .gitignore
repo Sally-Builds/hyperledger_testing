@@ -1,5 +1,6 @@
 artifacts/crypto-config/
-artifacts/crypto-config/Pi1MSPanchors.tx
-artifacts/crypto-config/Pi2MSPanchors.tx
+artifacts/crypto-config/Org1MSPanchors.tx
+artifacts/crypto-config/Org2MSPanchors.tx
 artifacts/crypto-config/genesis.block
 artifacts/crypto-config/mychannel.tx
+artifacts/src/github.com/cura/node_modules

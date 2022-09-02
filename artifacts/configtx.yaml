@@ -35,15 +35,15 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
-    - &Pi1
+    - &Org1
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Pi1MSP
+        Name: Org1MSP
 
         # ID to load the MSP definition as
-        ID: Pi1MSP
+        ID: Org1MSP
 
-        MSPDir: crypto-config/peerOrganizations/pi1.cura.com/msp
+        MSPDir: crypto-config/peerOrganizations/org1.cura.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -51,34 +51,34 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Pi1MSP.admin', 'Pi1MSP.peer', 'Pi1MSP.client')"
+                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Pi1MSP.admin', 'Pi1MSP.client')"
+                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Pi1MSP.admin')"
+                Rule: "OR('Org1MSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Pi1MSP.peer')"
+                Rule: "OR('Org1MSP.peer')"
 
         # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.pi1.cura.com
+            - Host: peer0.org1.cura.com
               Port: 7051
 
-    - &Pi2
+    - &Org2
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Pi2MSP
+        Name: Org2MSP
 
         # ID to load the MSP definition as
-        ID: Pi2MSP
+        ID: Org2MSP
 
-        MSPDir: crypto-config/peerOrganizations/pi2.cura.com/msp
+        MSPDir: crypto-config/peerOrganizations/org2.cura.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -86,22 +86,22 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Pi2MSP.admin', 'Pi2MSP.peer', 'Pi2MSP.client')"
+                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Pi2MSP.admin', 'Pi2MSP.client')"
+                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Pi2MSP.admin')"
+                Rule: "OR('Org2MSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Pi2MSP.peer')"
+                Rule: "OR('Org2MSP.peer')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.pi2.cura.com
+            - Host: peer0.org2.cura.com
               Port: 9051
 
 ################################################################################
@@ -211,10 +211,10 @@ Orderer: &OrdererDefaults
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.example.com
+        - Host: orderer.cura.com
           Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+          ClientTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/tls/server.crt
 
     Addresses:
         - orderer.cura.com:7050
@@ -308,8 +308,8 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Pi1
-                - *Pi2
+                - *Org1
+                - *Org2
             Capabilities:
                 <<: *ApplicationCapabilities
 
@@ -326,8 +326,18 @@ Profiles:
                   Port: 7050
                   ClientTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/tls/server.crt
                   ServerTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/tls/server.crt
+                # - Host: orderer4.cura.com
+                #   Port: 10050
+                #   ClientTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer4.cura.com/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer4.cura.com/tls/server.crt
+                # - Host: orderer5.cura.com
+                #   Port: 11050
+                #   ClientTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer5.cura.com/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/cura.com/orderers/orderer5.cura.com/tls/server.crt
             Addresses:
                 - orderer.cura.com:7050
+                # - orderer4.cura.com:10050
+                # - orderer5.cura.com:11050
 
             Organizations:
             - *OrdererOrg
@@ -336,5 +346,5 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                - *Pi1
-                - *Pi2
+                - *Org1
+                - *Org2
