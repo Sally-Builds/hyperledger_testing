@@ -21,5 +21,8 @@ configtxgen -profile BasicChannel -configPath . -channelID $CHANNEL_NAME -output
 echo "##########      Generating anchor peers update for Org1MSP   ##########"
 configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
 
-echo "##########      Generating anchor peers update for Org1MSP   ##########"
+echo "##########      Generating anchor peers update for Org2MSP   ##########"
 configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+
+echo "##########      Generating anchor peers update for Org3MSP   ##########"
+configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP

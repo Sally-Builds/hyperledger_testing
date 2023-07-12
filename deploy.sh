@@ -1,7 +1,10 @@
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/artifacts/crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/msp/tlscacerts/tlsca.cura.com-cert.pem
-export PEER0_ORG1_CA=${PWD}/artifacts/crypto-config/peerOrganizations/org1.cura.com/peers/peer0.org1.cura.com/tls/ca.crt
-export PEER0_ORG2_CA=${PWD}/artifacts/crypto-config/peerOrganizations/org2.cura.com/peers/peer0.org2.cura.com/tls/ca.crt
+export ORDERER_CA=${PWD}/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export ORDERER2_CA=${PWD}/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export ORDERER3_CA=${PWD}/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+export PEER0_ORG1_CA=${PWD}/artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+export PEER0_ORG2_CA=${PWD}/artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+export PEER0_ORG3_CA=${PWD}/artifacts/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
 export FABRIC_CFG_PATH=${PWD}/artifacts/config/
 
 export PRIVATE_DATA_CONFIG=${PWD}/artifacts/private-data/collections_config.json
@@ -10,23 +13,22 @@ export CHANNEL_NAME=mychannel
 
 setGlobalsForOrderer() {
     export CORE_PEER_LOCALMSPID="OrdererMSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/artifacts/crypto-config/ordererOrganizations/cura.com/orderers/orderer.cura.com/msp/tlscacerts/tlsca.cura.com-cert.pem
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/ordererOrganizations/cura.com/users/Admin@cura.com/msp
+    export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp
 
 }
 
 setGlobalsForPeer0Org1() {
     export CORE_PEER_LOCALMSPID="Org1MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org1.cura.com/users/Admin@org1.cura.com/msp
-    # export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.cura.com/peers/peer0.org1.cura.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
 }
 
 setGlobalsForPeer1Org1() {
     export CORE_PEER_LOCALMSPID="Org1MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org1.cura.com/users/Admin@org1.cura.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     export CORE_PEER_ADDRESS=localhost:8051
 
 }
@@ -34,7 +36,7 @@ setGlobalsForPeer1Org1() {
 setGlobalsForPeer0Org2() {
     export CORE_PEER_LOCALMSPID="Org2MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org2.cura.com/users/Admin@org2.cura.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
     export CORE_PEER_ADDRESS=localhost:9051
 
 }
@@ -42,8 +44,24 @@ setGlobalsForPeer0Org2() {
 setGlobalsForPeer1Org2() {
     export CORE_PEER_LOCALMSPID="Org2MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org2.cura.com/users/Admin@org2.cura.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
     export CORE_PEER_ADDRESS=localhost:10051
+
+}
+
+setGlobalsForPeer0Org3() {
+    export CORE_PEER_LOCALMSPID="Org3MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
+    export CORE_PEER_ADDRESS=localhost:11051
+
+}
+
+setGlobalsForPeer1Org3() {
+    export CORE_PEER_LOCALMSPID="Org3MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
+    export CORE_PEER_ADDRESS=localhost:12051
 
 }
 
@@ -88,6 +106,15 @@ installChaincode() {
     # setGlobalsForPeer1Org2
     # peer lifecycle chaincode install ${CC_NAME}.tar.gz
     # echo "===================== Chaincode is installed on peer1.org2 ===================== "
+
+    setGlobalsForPeer0Org3
+    echo "===================== Installing on peer0.org3 ===================== "
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    echo "===================== Chaincode is installed on peer0.org3 ===================== "
+
+    # setGlobalsForPeer1Org3
+    # peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    # echo "===================== Chaincode is installed on peer1.org3 ===================== "
 }
 
 queryInstalled() {
@@ -103,7 +130,7 @@ approveForMyOrg1() {
     setGlobalsForPeer0Org1
     # set -x
     peer lifecycle chaincode approveformyorg -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.cura.com --tls \
+        --ordererTLSHostnameOverride orderer.example.com --tls \
         --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${VERSION} \
         --init-required --package-id ${PACKAGE_ID} \
         --sequence ${VERSION}
@@ -125,7 +152,7 @@ approveForMyOrg2() {
     setGlobalsForPeer0Org2
 
     peer lifecycle chaincode approveformyorg -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.cura.com --tls $CORE_PEER_TLS_ENABLED \
+        --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED \
         --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} \
         --version ${VERSION} --init-required --package-id ${PACKAGE_ID} \
         --sequence ${VERSION}
@@ -133,13 +160,26 @@ approveForMyOrg2() {
     echo "===================== chaincode approved from org 2 ===================== "
 }
 
+approveForMyOrg3() {
+    setGlobalsForPeer0Org3
+
+    peer lifecycle chaincode approveformyorg -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED \
+        --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} \
+        --version ${VERSION} --init-required --package-id ${PACKAGE_ID} \
+        --sequence ${VERSION}
+
+    echo "===================== chaincode approved from org 3 ===================== "
+}
+
 commitChaincodeDefination() {
     setGlobalsForPeer0Org1
-    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.cura.com \
+    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         --channelID $CHANNEL_NAME --name ${CC_NAME} \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
         --version ${VERSION} --sequence ${VERSION} --init-required
 
 }
@@ -153,29 +193,44 @@ queryCommitted() {
 chaincodeInvokeInit() {
     setGlobalsForPeer0Org1
     peer chaincode invoke -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.cura.com \
+        --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME} \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
         --isInit -c '{"Args":[]}'
 
 }
 
 chaincodeInvoke() {
     setGlobalsForPeer0Org1
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.cura.com \
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
     --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
     --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  \
+    --peerAddresses localhost:11051 --tlsRootCertFiles $PEER0_ORG3_CA  \
     -c '{"function":"initLedger","Args":[]}'
 
 }
 
-chaincodeQuery() {
-    setGlobalsForPeer0Org2
 
-    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllPersonnels"]}'
+addPersonnelAggregrate () {
+    setGlobalsForPeer0Org1
+    peer chaincode invoke -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com \
+        --tls $CORE_PEER_TLS_ENABLED \
+        --cafile $ORDERER_CA \
+        -C $CHANNEL_NAME -n ${CC_NAME} \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        -c '{"function": "createPatient", "Args":["62f618fdfcaeea169cc835c5", "4", "9", "1", "9", "3", "12", "5", "0", "13", "17", "4"]}'
+}
+
+chaincodeQuery() {
+    setGlobalsForPeer0Org1
+
+    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllPatients"]}'
 }
 
 # presetup
@@ -187,7 +242,12 @@ chaincodeQuery() {
 # checkCommitReadyness
 # approveForMyOrg2
 # commitChaincodeDefination
+# approveForMyOrg3
+# commitChaincodeDefination
 # queryCommitted
+# chaincodeInvoke
 # chaincodeInvokeInit
 # chaincodeQuery
-# chaincodeInvoke
+
+# addPersonnelAggregrate
+chaincodeQuery

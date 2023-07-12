@@ -3,4 +3,8 @@ artifacts/crypto-config/Org1MSPanchors.tx
 artifacts/crypto-config/Org2MSPanchors.tx
 artifacts/crypto-config/genesis.block
 artifacts/crypto-config/mychannel.tx
-artifacts/src/github.com/cura/node_modules
+artifacts/src/github.com/terminologyRegistry/node_modules
+artifacts/src/github.com/terminologyRegistry/dist
+caliper/node_modules
+api/node_modules
+utils/node_modules
